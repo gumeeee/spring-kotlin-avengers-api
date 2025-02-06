@@ -1,4 +1,4 @@
-# Avengers API - LiveCode DIO - 01/04/2021
+# Avengers API
 
 Desenvolvimento de uma API utilizando SpringBoot + Kotlin com o intuito de cadastro de Vingadores.
 
@@ -14,7 +14,7 @@ Desenvolvimento de uma API utilizando SpringBoot + Kotlin com o intuito de cadas
 - Java 8
 - Heroku
 
-## Criação do esqueleto do projeto
+## Criação de template do projeto
 
 - https://start.spring.io/
 
