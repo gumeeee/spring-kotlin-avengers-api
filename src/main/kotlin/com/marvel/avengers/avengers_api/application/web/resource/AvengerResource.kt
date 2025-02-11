@@ -28,7 +28,7 @@ class AvengerResource(
     fun getAvengers(): ResponseEntity<List<AvengerResponse>> =
         repository.getAvengers().map { AvengerResponse.from(it) }.let { ResponseEntity.ok().body(it) }
 
-    @GetMapping("{id}")
+    @GetMapping("{id}/detail")
     fun getAvengerDetails(@PathVariable("id") id: Long): ResponseEntity<AvengerResponse> =
         repository.getDetails(id)?.let { ResponseEntity.ok().body(AvengerResponse.from(it)) }
             ?: ResponseEntity.notFound().build()
