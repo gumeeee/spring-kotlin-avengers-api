@@ -29,7 +29,8 @@ class AvengerResource(
 
     @GetMapping("{id}")
     fun getAvengerDetails(@PathVariable("id") id: Long): ResponseEntity<AvengerResponse> =
-        repository.getDetails(id).let { ResponseEntity.ok().body(it?.let { it1 -> AvengerResponse.from(it1) }) }
+        repository.getDetails(id)?.let { ResponseEntity.ok().body(AvengerResponse.from(it)) }
+            ?: ResponseEntity.notFound().build()
 
 
     @PostMapping
@@ -46,7 +47,7 @@ class AvengerResource(
             AvengerRequest.to(it.id, request).apply {
                 repository.update(this)
             }.let { avenger ->
-                ResponseEntity.ok().body(AvengerResponse.from(avenger))
+                ResponseEntity.accepted().body(AvengerResponse.from(avenger))
             }
         } ?: ResponseEntity.notFound().build<Unit>()
 
