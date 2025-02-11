@@ -26,6 +26,22 @@ services:
     networks:
       - postgres-compose-network
 
+  avengers-api: # Container da sua aplicação
+    build:
+      context: ../  # Diretório raiz do projeto (onde está o Dockerfile)
+      dockerfile: docker/Dockerfile
+    env_file:
+      - .env
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres-avenger
+    networks:
+      - avengers-network
+
+
 volumes:
   pdb12:
 networks:
