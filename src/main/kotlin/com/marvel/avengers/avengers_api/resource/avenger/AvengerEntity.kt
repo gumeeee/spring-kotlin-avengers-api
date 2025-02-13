@@ -19,7 +19,11 @@ data class AvengerEntity(
 
     @Column(nullable = false)
     val person: String,
+
+    @Column(nullable = false)
     val description: String?,
+
+    @Column(nullable = false)
     val history: String?
 ) {
     fun toAvenger() = Avenger(id, nick, person, description, history)
