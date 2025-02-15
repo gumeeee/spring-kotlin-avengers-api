@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
-private const val API_PATH: String = "/v1/avengers"
+private const val API_PATH: String = "/v1/api/avenger"
 
 @RestController
 @RequestMapping(API_PATH)
