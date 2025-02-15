@@ -5,14 +5,14 @@ Desenvolvimento de uma API utilizando SpringBoot + Kotlin com o intuito de cadas
 ## Tecnologias / Frameworks / IDE
 
 - Intellij
-- SpringBoot 2.4.4
+- SpringBoot 3.3.8
 - Maven
 - Kotlin
 - SpringData JPA
 - PostgreSQL
 - Flyway
-- Java 8
-- Heroku
+- Java 17
+- Railway
 
 ## Criação de template do projeto
 
@@ -49,22 +49,22 @@ Desenvolvimento de uma API utilizando SpringBoot + Kotlin com o intuito de cadas
 
 ```sql
 create table avenger (
-    id bigserial not null,
+    id bigserial primary key,
     nick varchar(36),
     person varchar(128),
     description varchar(128),
     history text
-    primary key (id)
 );
 
-alter table avenger add constraint UK_5r88eemotwgru6k0ilqb2ledh unique (nick);
+alter table avenger
+add constraint UK_5r88eemotwgru6k0ilqb2ledh unique (nick);
 ```
 
 ### Profiles
 
 - application.yaml
 - application-dev.yaml
-- application-heroku.yaml
+- application-prod.yaml
 
 ```yaml
 spring:
@@ -99,7 +99,7 @@ spring:
     hibernate:
       ddl-auto: none
       naming:
-        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
   main:
     allow-bean-definition-overriding: true
@@ -129,8 +129,6 @@ server:
 
 ```yaml
 spring:
-  profiles:
-    active: dev
   jackson:
     serialization:
       indent-output: true
@@ -146,8 +144,6 @@ spring:
 
 ```yaml
 spring:
-  profiles:
-    active: heroku
   jackson:
     serialization:
       indent-output: true
@@ -166,8 +162,8 @@ spring:
 ### Environment Config
 
 ```sh 
-DB_USER=dio.avenger
-DB_PASSWORD=dio.avenger
+DB_USER=gume.avenger
+DB_PASSWORD=gume.avenger
 DB_NAME=avengers
 ```
 
@@ -194,7 +190,7 @@ services:
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: "avengers@email.com"
-      PGADMIN_DEFAULT_PASSWORD: "123456"
+      PGADMIN_DEFAULT_PASSWORD: "root"
     ports:
       - "5556:80"
     depends_on:
@@ -211,11 +207,11 @@ networks:
 
 ### Script / Comandos
 
-- `docker-compose -f backend-services.yaml up -d` (deploy) / `docker-compose -f backend-services.yaml down` (undeploy) 
+- `docker-compose -f avenger-api-resources.yaml up -d` (deploy) / `docker-compose -f avenger-api-resources.yaml down` (undeploy) 
 
 - Start API 
 ```sh
-./mvnw spring-boot:run -Dspring-boot.run.profiles=dev -Dspring-boot.run.jvmArguments="-Xmx256m -Xms128m" -Dspring-boot.run.arguments="'--DB_USER=dio.avenger' '--DB_PASSWORD=dio.avenger' '--DB_NAME=avengers'"
+./mvnw spring-boot:run -Dspring-boot.run.profiles=dev -Dspring-boot.run.jvmArguments="-Xmx256m -Xms128m" -Dspring-boot.run.arguments="'--DB_USER=gume.avenger' '--DB_PASSWORD=gume.avenger' '--DB_NAME=avengers'"
 ``` 
 
 ## Railway
@@ -227,5 +223,5 @@ networks:
 ### Procfile
 
 ```text
-web: java -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap $JAVA_OPTS -Dserver.port=$PORT -Dspring.profiles.active=heroku -jar target/*.jar
+web: java -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap $JAVA_OPTS -Dserver.port=$PORT -Dspring.profiles.active=prod -jar target/*.jar
 ```
